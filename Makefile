@@ -98,3 +98,8 @@ rebar:
 	wget -q http://cloud.github.com/downloads/basho/rebar/rebar
 	chmod u+x rebar
 
+include inst.dat
+install: rel
+	@mkdir -p $(prefix)
+	@cp -R rel/ejabberd/* $(prefix)
+

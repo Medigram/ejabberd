@@ -170,4 +170,3 @@ decode([0,0]) ->
     false;
 decode([0,1]) ->
     true.
-
