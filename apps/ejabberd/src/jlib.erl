@@ -59,7 +59,8 @@
          encode_base64/1,
          ip_to_list/1,
          rsm_encode/1,
-         rsm_decode/1]).
+         rsm_decode/1,
+         string_to_jid/1]).
 
 -include("jlib.hrl").
 
@@ -793,3 +794,41 @@ ip_to_list({A,B,C,D}) ->
     lists:flatten(io_lib:format("~w.~w.~w.~w",[A,B,C,D]));
 ip_to_list(IP) ->
     lists:flatten(io_lib:format("~w", [IP])).
+
+
+string_to_jid(J) ->
+    string_to_jid1(J, "").
+
+string_to_jid1([$@ | _J], "") ->
+    error;
+string_to_jid1([$@ | J], N) ->
+    string_to_jid2(J, lists:reverse(N), "");
+string_to_jid1([$/ | _J], "") ->
+    error;
+string_to_jid1([$/ | J], N) ->
+    string_to_jid3(J, "", lists:reverse(N), "");
+string_to_jid1([C | J], N) ->
+    string_to_jid1(J, [C | N]);
+string_to_jid1([], "") ->
+    error;
+string_to_jid1([], N) ->
+    make_jid("", lists:reverse(N), "").
+
+%% Only one "@" is admitted per JID
+string_to_jid2([$@ | _J], _N, _S) ->
+    error;
+string_to_jid2([$/ | _J], _N, "") ->
+    error;
+string_to_jid2([$/ | J], N, S) ->
+    string_to_jid3(J, N, lists:reverse(S), "");
+string_to_jid2([C | J], N, S) ->
+    string_to_jid2(J, N, [C | S]);
+string_to_jid2([], _N, "") ->
+    error;
+string_to_jid2([], N, S) ->
+    make_jid(N, lists:reverse(S), "").
+
+string_to_jid3([C | J], N, S, R) ->
+    string_to_jid3(J, N, S, [C | R]);
+string_to_jid3([], N, S, R) ->
+    make_jid(N, S, lists:reverse(R)).
