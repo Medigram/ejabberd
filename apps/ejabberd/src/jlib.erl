@@ -298,6 +298,13 @@ is_nodename(J) ->
                 Char
         end).
 
+nodeprep(S) when is_list(S) ->
+    case nodeprep(list_to_binary(S)) of
+    error ->
+        error;
+    Bin ->
+        binary_to_list(Bin)
+    end;
 nodeprep(S) when is_binary(S), size(S) < 1024 ->
     R = stringprep:nodeprep(S),
     if
@@ -307,6 +314,13 @@ nodeprep(S) when is_binary(S), size(S) < 1024 ->
 nodeprep(_) ->
     error.
 
+nameprep(S) when is_list(S) ->
+    case nameprep(list_to_binary(S)) of
+    error ->
+        error;
+    Bin ->
+        binary_to_list(Bin)
+    end;
 nameprep(S) when is_binary(S), size(S) < 1024 ->
     R = stringprep:nameprep(S),
     if
