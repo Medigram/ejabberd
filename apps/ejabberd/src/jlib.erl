@@ -846,3 +846,23 @@ string_to_jid3([C | J], N, S, R) ->
     string_to_jid3(J, N, S, [C | R]);
 string_to_jid3([], N, S, R) ->
     make_jid(N, S, lists:reverse(R)).
+
+jid_to_string(#jid{user = User, server = Server, resource = Resource}) ->
+    jid_to_string({User, Server, Resource});
+jid_to_string({Node, Server, Resource}) when is_binary(Node) ->
+    jid_to_string({binary_to_list(Node), binary_to_list(Server), binary_to_list(Resource)});
+jid_to_string({Node, Server, Resource}) ->
+    S1 = case Node of
+         "" ->
+         "";
+         _ ->
+         Node ++ "@"
+     end,
+    S2 = S1 ++ Server,
+    S3 = case Resource of
+         "" ->
+         S2;
+         _ ->
+         S2 ++ "/" ++ Resource
+     end,
+    S3.
