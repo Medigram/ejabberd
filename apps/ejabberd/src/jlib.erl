@@ -39,6 +39,7 @@
          make_jid/1,
          binary_to_jid/1,
          jid_to_binary/1,
+         jid_to_string/1,
          is_nodename/1,
          nodeprep/1,
          nameprep/1,
