@@ -300,12 +300,13 @@ is_nodename(J) ->
         end).
 
 nodeprep(S) when is_list(S) ->
-    case nodeprep(list_to_binary(S)) of
-    error ->
-        error;
-    Bin ->
-        binary_to_list(Bin)
-    end;
+    nodeprep(list_to_binary(S));
+    %% case nodeprep(list_to_binary(S)) of
+    %% error ->
+    %%     error;
+    %% Bin ->
+    %%     binary_to_list(Bin)
+    %% end;
 nodeprep(S) when is_binary(S), size(S) < 1024 ->
     R = stringprep:nodeprep(S),
     if
@@ -316,12 +317,13 @@ nodeprep(_) ->
     error.
 
 nameprep(S) when is_list(S) ->
-    case nameprep(list_to_binary(S)) of
-    error ->
-        error;
-    Bin ->
-        binary_to_list(Bin)
-    end;
+    nameprep(list_to_binary(S));
+    %% case nameprep(list_to_binary(S)) of
+    %% error ->
+    %%     error;
+    %% Bin ->
+    %%     binary_to_list(Bin)
+    %% end;
 nameprep(S) when is_binary(S), size(S) < 1024 ->
     R = stringprep:nameprep(S),
     if
@@ -332,12 +334,13 @@ nameprep(_) ->
     error.
 
 resourceprep(S) when is_list(S) ->
-    case resourceprep(list_to_binary(S)) of
-        error ->
-            error;
-        Binary ->
-            binary_to_list(Binary)
-    end;
+    resourceprep(list_to_binary(S));
+    %% case resourceprep(list_to_binary(S)) of
+    %%     error ->
+    %%         error;
+    %%     Binary ->
+    %%         binary_to_list(Binary)
+    %% end;
 resourceprep(S) when size(S) < 1024 ->
     R = stringprep:resourceprep(S),
     if
