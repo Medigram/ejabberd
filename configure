@@ -1,4 +1,33 @@
-{hosts, "[\"localhost\"]"}.
+#!/bin/bash
+PREFIX="/opt/mg_xmpp"
+EXTAUTH_PROG="/Users/bitdiddle/emacs/medigram-server-v2/backend/manage.py ejabberd_auth_bridge"
+EJABB_CERT="/etc/medigram-staging.com.pem"
+HOSTS="api.medigram-development.com"
+
+while [ $# -gt 0 ]
+do
+  case $1
+  in
+    -p)
+      PREFIX=$2
+      shift 2
+      ;;
+    -exp)
+      EXTAUTH_PROG=$2
+      shift 2
+      ;;
+    *)
+      echo "usage: $0 [-p {prefix} -exp {extauth_prog}]"
+      exit
+    ;;
+  esac
+done
+
+if test -n "$COOKIE"; then COOKIE="-setcookie $COOKIE"; fi
+
+echo "==> configuring mg_xmpp in rel/mg_xmpp.config"
+cat > rel/mg_xmpp.config << EOF
+{hosts, "[\"$HOSTS\"]"}.
 {host_config, ""}.
 {odbc_server, "%% {odbc_server, {mysql, \"localhost\", 3306, \"database\", \"username\", \"password\"}}."}.
 {s2s_addr, "%% { {s2s_addr, \"example-host.net\"}, { {127,0,0,1}, 5269 } }."}.
@@ -26,8 +55,14 @@
            "  %% as shown below. Some counters will always return 0 because of that.\n"
            "  %%, {mod_snmp, [{modules, []}, {rt_enabled, false}]}"}.
 {sm_backend, "{mnesia, []}"}.
-{auth_method, "internal"}.
-{ext_auth_script, "%%{extauth_program, \"/path/to/authentication/script\"}."}.
-{tls_config, "%%{certfile, \"/path/to/ssl.pem\"}, starttls,"}.
+{auth_method, "external"}.
+{extauth_program, "\"$EXTAUTH_PROG\""}.
+{tls_config, "{certfile, \"$EJABB_CERT\" }, starttls,"}.
 {wss_config, "%%,{cert, \"priv/server.crt\"}, {key, \"priv/server.key\"}, {key_pass, \"\"}"}. %% PEM format
 {zlib, ""}.
+EOF
+
+cat > inst.dat << EOF
+prefix = $PREFIX
+EOF
+cat rel/mg_xmpp.config
