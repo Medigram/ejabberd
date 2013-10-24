@@ -1,8 +1,8 @@
 #!/bin/bash
-PREFIX="/opt/mg_xmpp"
-EXTAUTH_PROG="/Users/bitdiddle/emacs/medigram-server-v2/backend/manage.py ejabberd_auth_bridge"
-EJABB_CERT="/etc/medigram-staging.com.pem"
-HOSTS="api.medigram-development.com"
+PREFIX=/opt/mg_xmpp
+EXTAUTH_PROG="/home/medigram/medigram-server-v2/backend/manage.py ejabberd_auth_bridge"
+EJABB_CERT=/etc/medigram-staging.com.pem
+HOSTS=api.medigram-development.com
 
 while [ $# -gt 0 ]
 do
@@ -14,6 +14,10 @@ do
       ;;
     -exp)
       EXTAUTH_PROG=$2
+      shift 2
+      ;;
+    -ejc)
+      EJABB_CERT=$2
       shift 2
       ;;
     *)
