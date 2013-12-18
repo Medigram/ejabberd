@@ -74,6 +74,7 @@ element_to_binary(El) ->
 element_to_string(El) ->
     case catch element_to_string_nocatch(El) of
 	{'EXIT', Reason} ->
+            io:format("bad conversion ~p ~n",[El]),
 	    erlang:error({badxml, El, Reason});
 	Result ->
 	    Result
