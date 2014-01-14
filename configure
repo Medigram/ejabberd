@@ -64,8 +64,8 @@ cat > rel/mg_xmpp.config << EOF
            "  %% as shown below. Some counters will always return 0 because of that.\n"
            "  %%, {mod_snmp, [{modules, []}, {rt_enabled, false}]}"}.
 {sm_backend, "{mnesia, []}"}.
-{auth_method, "external"}.
-{extauth_program, "\"$EXTAUTH_PROG\""}.
+{auth_method, "medigram"}.
+%%{extauth_program, "\"$EXTAUTH_PROG\""}.
 {tls_config, "{certfile, \"$EJABB_CERT\" }, starttls,"}.
 {wss_config, "%%,{cert, \"priv/server.crt\"}, {key, \"priv/server.key\"}, {key_pass, \"\"}"}. %% PEM format
 {zlib, ""}.
