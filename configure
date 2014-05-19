@@ -1,8 +1,7 @@
 #!/bin/bash
 PREFIX=/opt/mg_xmpp
-EXTAUTH_PROG="/home/medigram/medigram-server-rest/backend/manage.py ejabberd_auth_bridge"
-EJABB_CERT=/etc/certs/medigram-staging.com.pem
-HOSTS=api.medigram-development.com
+EJABB_CERT=/etc/certs/medigram.pem
+HOSTS=medigram-staging.com
 
 while [ $# -gt 0 ]
 do
@@ -64,7 +63,6 @@ cat > rel/mg_xmpp.config << EOF
            "  %%, {mod_snmp, [{modules, []}, {rt_enabled, false}]}"}.
 {sm_backend, "{mnesia, []}"}.
 {auth_method, "medigram"}.
-%%{extauth_program, "\"$EXTAUTH_PROG\""}.
 {tls_config, "{certfile, \"$EJABB_CERT\" }, starttls,"}.
 {wss_config, "%%,{cert, \"priv/server.crt\"}, {key, \"priv/server.key\"}, {key_pass, \"\"}"}. %% PEM format
 {zlib, ""}.
